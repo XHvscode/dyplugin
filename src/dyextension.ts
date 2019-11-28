@@ -1,5 +1,5 @@
+import * as path from 'path';
 import * as vscode from 'vscode';
-
 import * as misc from './misc';
 import * as plugin from './plugin';
 
@@ -22,10 +22,23 @@ export class DyExtensionsProvider implements vscode.TreeDataProvider<DyExtension
         if (element) { return Promise.resolve(items); }
         let pluginlist = plugin.Plugin.GetExtensionList2();
         pluginlist.forEach(oplugin => {
-            let name = oplugin.packageJSON.displayName;
-            let version = oplugin.packageJSON.version;
-            let des = oplugin.packageJSON.description;
-            items.push(new DyExtensionsItem(name, vscode.TreeItemCollapsibleState.None, version, des));
+
+            let itemName: string = oplugin.packageJSON.displayName;
+            if (!itemName) { itemName = oplugin.packageJSON.name; }
+
+            let extPath: string = oplugin.extensionPath;
+            let iconname: string = oplugin.packageJSON.icon;
+            let iconPath: string;
+            if (typeof iconname === 'undefined') { iconPath = misc.darkRes("dependency.svg"); }
+            else { iconPath = path.join(extPath, iconname); }
+
+            items.push(new DyExtensionsItem(
+                itemName,
+                vscode.TreeItemCollapsibleState.None,
+                oplugin.packageJSON.version,
+                oplugin.packageJSON.description,
+                iconPath
+            ));
         });
         return Promise.resolve(items);
     }
@@ -36,7 +49,8 @@ export class DyExtensionsItem extends vscode.TreeItem {
         public readonly name: string,
         public readonly collapsibleState: vscode.TreeItemCollapsibleState,
         public readonly version: string,
-        public readonly des: string
+        public readonly des: string,
+        public readonly iconPath: string
     ) {
         super(name, collapsibleState);
     }
@@ -48,11 +62,6 @@ export class DyExtensionsItem extends vscode.TreeItem {
     get description(): string {
         return this.version;
     }
-
-    iconPath = {
-        light: misc.lightRes("dependency.svg"),
-        dark: misc.darkRes("dependency.svg")
-    };
 
     contextValue = "DYExtension";
 }
