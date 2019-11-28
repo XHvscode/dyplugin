@@ -37,7 +37,10 @@ export class DyExtensionsProvider implements vscode.TreeDataProvider<DyExtension
                 vscode.TreeItemCollapsibleState.None,
                 oplugin.packageJSON.version,
                 oplugin.packageJSON.description,
-                iconPath
+                iconPath,
+                oplugin.id,
+                vscode.Uri.parse(oplugin.packageJSON.homepage),
+                oplugin.extensionPath
             ));
         });
         return Promise.resolve(items);
@@ -50,7 +53,10 @@ export class DyExtensionsItem extends vscode.TreeItem {
         public readonly collapsibleState: vscode.TreeItemCollapsibleState,
         public readonly version: string,
         public readonly des: string,
-        public readonly iconPath: string
+        public readonly iconPath: string,
+        public readonly id: string,
+        public readonly resourceUri:vscode.Uri,
+        public readonly dir:string
     ) {
         super(name, collapsibleState);
     }
