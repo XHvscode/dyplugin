@@ -17,7 +17,7 @@ export function activate(context: vscode.ExtensionContext) {
     // The commandId parameter must match the command field in package.json
     const provider = new DyExtensionsProvider();
     vscode.window.registerTreeDataProvider("dyExtension", provider);
-    // vscode.commands.registerCommand("tree.delete", (node: DyExtensionsItem) => provider.delete(node));
+    vscode.commands.registerCommand("dyExtension.refreshAll", () => provider.refresh());
     // vscode.commands.registerCommand("tree.open", (node: DyExtensionsItem) => provider.open(node));
 }
 

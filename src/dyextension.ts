@@ -9,6 +9,10 @@ export class DyExtensionsProvider implements vscode.TreeDataProvider<DyExtension
     private _onDidChangeTreeData: vscode.EventEmitter<DyExtensionsItem | undefined> = new vscode.EventEmitter<DyExtensionsItem | undefined>();
     readonly onDidChangeTreeData: vscode.Event<DyExtensionsItem | undefined> = this._onDidChangeTreeData.event;
 
+    refresh(): void {
+        this._onDidChangeTreeData.fire();
+    }
+
     getTreeItem(element: DyExtensionsItem): vscode.TreeItem {
         return element;
     }

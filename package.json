@@ -1,21 +1,21 @@
 {
-	"name": "dyplugin",
-	"displayName": "dyplugin",
+    "name": "dyplugin",
+    "displayName": "dyplugin",
     "description": "a plugin to manger vscode extensions",
     "publisher": "xiaohao",
-	"version": "0.0.1",
-	"engines": {
-		"vscode": "^1.40.0"
-	},
-	"categories": [
-		"Other"
-	],
-	"activationEvents": [
-		"onView:dyExtension"
-	],
-	"main": "./out/extension.js",
-	"contributes": {
-		"viewsContainers": {
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.40.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onView:dyExtension"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "viewsContainers": {
             "activitybar": [
                 {
                     "id": "DYExtensions",
@@ -31,24 +31,43 @@
                     "name": "dy Extension"
                 }
             ]
-        }
-	},
-	"scripts": {
-		"vscode:prepublish": "npm run compile",
-		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"pretest": "npm run compile",
-		"test": "node ./out/test/runTest.js"
-	},
-	"devDependencies": {
-		"@types/glob": "^7.1.1",
-		"@types/mocha": "^5.2.7",
-		"@types/node": "^12.11.7",
-		"@types/vscode": "^1.40.0",
-		"glob": "^7.1.5",
-		"mocha": "^6.2.2",
-		"typescript": "^3.6.4",
-		"tslint": "^5.20.0",
-		"vscode-test": "^1.2.2"
-	}
+        },
+        "menus": {
+            "view/title": [
+                {
+                    "command": "dyExtension.refreshAll",
+                    "when": "view==dyExtension",
+                    "group": "navigation"
+                }
+            ]
+        },
+        "commands": [
+            {
+                "command": "dyExtension.refreshAll",
+                "title": "刷新插件列表",
+                "icon": {
+                    "light": "resources/light/refresh.svg",
+                    "dark": "resources/dark/refresh.svg"
+                }
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "pretest": "npm run compile",
+        "test": "node ./out/test/runTest.js"
+    },
+    "devDependencies": {
+        "@types/glob": "^7.1.1",
+        "@types/mocha": "^5.2.7",
+        "@types/node": "^12.11.7",
+        "@types/vscode": "^1.40.0",
+        "glob": "^7.1.5",
+        "mocha": "^6.2.2",
+        "typescript": "^3.6.4",
+        "tslint": "^5.20.0",
+        "vscode-test": "^1.2.2"
+    }
 }
