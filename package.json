@@ -4,6 +4,7 @@
     "description": "a plugin to manger vscode extensions",
     "publisher": "xiaohao",
     "version": "0.0.1",
+    "icon": "resources/dy.png",
     "engines": {
         "vscode": "^1.40.0"
     },
