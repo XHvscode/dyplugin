@@ -1,7 +1,8 @@
 {
 	"name": "dyplugin",
 	"displayName": "dyplugin",
-	"description": "a plugin to manger vscode extensions",
+    "description": "a plugin to manger vscode extensions",
+    "publisher": "xiaohao",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.40.0"
@@ -10,14 +11,27 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.helloWorld"
+		"onView:dyExtension"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
-		"commands": [{
-			"command": "extension.helloWorld",
-			"title": "Hello World"
-		}]
+		"viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "DYExtensions",
+                    "title": "DY Extensions",
+                    "icon": "resources/dy.svg"
+                }
+            ]
+        },
+        "views": {
+            "DYExtensions": [
+                {
+                    "id": "dyExtension",
+                    "name": "dy Extension"
+                }
+            ]
+        }
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
