@@ -13,6 +13,18 @@ export class DyExtensionsProvider implements vscode.TreeDataProvider<DyExtension
         this._onDidChangeTreeData.fire();
     }
 
+    refreshAll(): void {
+        this._onDidChangeTreeData.fire();
+    }
+
+    updateAll(): void {
+
+    }
+
+    install(): void {
+        plugin.Plugin.SearchExtension();
+    }
+
     getTreeItem(element: DyExtensionsItem): vscode.TreeItem {
         return element;
     }
@@ -20,7 +32,7 @@ export class DyExtensionsProvider implements vscode.TreeDataProvider<DyExtension
     getChildren(element: DyExtensionsItem): Thenable<DyExtensionsItem[]> {
         let items: DyExtensionsItem[] = [];
         if (element) { return Promise.resolve(items); }
-        let pluginlist = plugin.Plugin.GetExtensionList2();
+        let pluginlist = plugin.Plugin.GetExtensionList();
         pluginlist.forEach(oplugin => {
 
             let itemName: string = oplugin.packageJSON.displayName;
@@ -55,8 +67,8 @@ export class DyExtensionsItem extends vscode.TreeItem {
         public readonly des: string,
         public readonly iconPath: string,
         public readonly id: string,
-        public readonly resourceUri:vscode.Uri,
-        public readonly dir:string
+        public readonly resourceUri: vscode.Uri,
+        public readonly dir: string
     ) {
         super(name, collapsibleState);
     }

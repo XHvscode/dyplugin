@@ -1,109 +1,61 @@
 import * as vscode from 'vscode';
-
-
-export class ExtensionMetadata {
-    constructor(
-        public galleryApiUrl: string,
-        public id: string,
-        public downloadUrl: string,
-        public publisherId: string,
-        public publisherDisplayName: string,
-        public date: string
-    ) { }
-}
-
-export class ExtensionInformation {
-    constructor(
-        public metadata: ExtensionMetadata,
-        public name: string,
-        public version: string,
-        public publisher: string
-    ) { }
-
-    public static fromJSON(text: string) {
-        try {
-            // TODO: JSON.parse may throw error
-            // Throw custom error should be more friendly
-            const obj = JSON.parse(text);
-            const meta = new ExtensionMetadata(
-                obj.meta.galleryApiUrl,
-                obj.meta.id,
-                obj.meta.downloadUrl,
-                obj.meta.publisherId,
-                obj.meta.publisherDisplayName,
-                obj.meta.date
-            );
-            const item = new ExtensionInformation(
-                meta, obj.name, obj.publisher, obj.version
-            );
-            return item;
-        } catch (err) {
-            throw new Error(err);
-        }
-    }
-
-    public static fromJSONList(text: string) {
-        const extList: ExtensionInformation[] = [];
-        try {
-            // TODO: JSON.parse may throw error
-            // Throw custom error should be more friendly
-            const list = JSON.parse(text);
-            list.forEach((obj: any) => {
-                const meta = new ExtensionMetadata(
-                    obj.metadata.galleryApiUrl,
-                    obj.metadata.id,
-                    obj.metadata.downloadUrl,
-                    obj.metadata.publisherId,
-                    obj.metadata.publisherDisplayName,
-                    obj.metadata.date
-                );
-                const item = new ExtensionInformation(meta, obj.name, obj.publisher, obj.version);
-                if (item.name !== "code-settings-sync") {
-                    extList.push(item);
-                }
-            });
-        } catch (err) {
-            throw new Error(err);
-        }
-        return extList;
-    }
-
-
-}
+import * as fs from 'fs';
+import * as path from 'path';
 
 export class Plugin {
+
+    static extensionDir = "/home/duoyi/下载/vscode";
+    static extensionExt = ".vsix";
+
     public static GetExtensionList() {
         let list1 = vscode.extensions.all;
         let list2 = list1.filter(ext => !ext.packageJSON.isBuiltin);
-        let listr = list2.map(ext => {
-            const meta = ext.packageJSON.__metadata || {
-                id: ext.packageJSON.uuid,
-                publisherId: ext.id,
-                publisherDisplayName: ext.packageJSON.publisher
-            };
-            const data = new ExtensionMetadata(
-                meta.galleryApiUrl,
-                meta.id,
-                meta.downloadUrl,
-                meta.publisherId,
-                meta.publisherDisplayName,
-                meta.date
-            );
-            const info = new ExtensionInformation(
-                data,
-                ext.packageJSON.name,
-                ext.packageJSON.publisher,
-                ext.packageJSON.version);
-            return info;
-        });
-        let list3 = list1.filter(ext => ext.id === "tabnine.tabnine-vscode");
-        let list4 = list1.filter(ext => ext.id === "njpwerner.autodocstring");
-        return listr;
+        return list2;
     }
 
-    public static GetExtensionList2() {
-        let list1 = vscode.extensions.all;
-        let list2 = list1.filter(ext => !ext.packageJSON.isBuiltin);
-        return list2;
+    public static async ShowInstallBox() {
+        let info: vscode.InputBoxOptions = {
+            prompt: "输入扩展名",
+            placeHolder: "搜索扩展"
+        };
+        await vscode.window.showInputBox(info).then(input => {
+            if (input) { Plugin.ShowExtensionPick(input); }
+        });
+    }
+
+
+    public static async ShowExtensionPick(name: string) {
+        const modules: string[] = [
+            "111111111",
+            "222222222",
+            "33333333",
+            "44444444",
+            "55555555",
+            "66666666"
+        ];
+        vscode.window.showQuickPick(modules, {
+            placeHolder: '选择插件',
+        }).then((moduleName) => {
+            console.log(moduleName);
+        });
+    }
+
+
+    public static async SearchExtension() {
+        let subfiles = fs.readdirSync(Plugin.extensionDir);
+        const modules: string[] = [];
+        subfiles.forEach(file => {
+            let ext = path.extname(file);
+            if (ext === Plugin.extensionExt) {
+                let basename = path.basename(file, Plugin.extensionExt);
+                modules.push(basename);
+            }
+        });
+
+        vscode.window.showQuickPick(modules, {
+            placeHolder: '选择插件',
+        }).then((moduleName) => {
+            console.log(moduleName);
+        });
     }
 }
