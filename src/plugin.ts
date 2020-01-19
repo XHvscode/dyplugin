@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 
+
 export class Plugin {
 
     static extensionDir = "/home/duoyi/下载/vscode";
@@ -55,7 +56,22 @@ export class Plugin {
         vscode.window.showQuickPick(modules, {
             placeHolder: '选择插件',
         }).then((moduleName) => {
-            console.log(moduleName);
+            if (typeof moduleName === 'undefined') { return; }
+            let filepath = path.join(Plugin.extensionDir, moduleName, Plugin.extensionExt);
+            console.log(filepath);
+            // Promise.resolve(`install ${filepath}`).then(local => Plugin.SSSXXX(local));
+            // vscode.commands.executeCommand(
+            //     // "workbench.extensions.action.installExtensions",
+            //     "workbench.extensions.action.installVSIX",
+            //     filepath
+            // );
         });
     }
+
+    // public static Install(filepath: string): void {
+    //     const term = vscode.window.createTerminal ( 'VSIX' );
+    //     const command = Utils.isInsiders () ? 'code-insiders' : ( Utils.isExploration () ? 'code-exploration' : 'code' );
+    // }
 }
+
+
